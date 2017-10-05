@@ -9,7 +9,7 @@ APOD_URL = 'https://api.nasa.gov/planetary/apod'
 
 SLACK_WEBHOOK_URL = (
     'https://hooks.slack.com/services/'
-    'T0320DXKS/B079DG55K/RJsjlL2K4LVhXOs76QjXpjEx'
+    'T0320DXKS/B7F8CG6KZ/y7EuYaFs6IM57ytEmujOh8AK'
 )
 
 
