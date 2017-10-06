@@ -22,8 +22,21 @@ def get_apod_for_today():
     return requests.get(APOD_URL, params=data).json()
 
 
+def get_available_image(apod):
+    # sometimes API returns 404 for url,
+    # have to check availability
+    for url in [apod['hd_url'], apod['url']]:
+        if requests.head(url).ok:
+            return url
+    return None
+
+
 def send_to_slack(apod):
-    text = '%(title)s\n\n%(url)s\n\n%(explanation)s' % apod
+    text = (
+        '%(title)s\n\n'
+        '%(image)s\n\n'
+        '%(explanation)s'
+    ) % apod
 
     data = {
         'payload': json.dumps({
@@ -38,4 +51,7 @@ def send_to_slack(apod):
 
 if __name__ == '__main__':
     apod = get_apod_for_today()
-    send_to_slack(apod)
+    available_image = get_available_image(apod)
+    if available_image is not None:
+        apod['image'] = available_image
+        send_to_slack(apod)
