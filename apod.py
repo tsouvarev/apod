@@ -23,7 +23,7 @@ def get_apod_for_today():
 
 
 def send_to_slack(apod):
-    text = '%(title)s\n\n%(hdurl)s\n\n%(explanation)s' % apod
+    text = '%(title)s\n\n%(url)s\n\n%(explanation)s' % apod
 
     data = {
         'payload': json.dumps({
