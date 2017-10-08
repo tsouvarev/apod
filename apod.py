@@ -25,7 +25,7 @@ def get_apod_for_today():
 def get_available_image(apod):
     # sometimes API returns 404 for url,
     # have to check availability
-    for url in [apod['hd_url'], apod['url']]:
+    for url in [apod['hdurl'], apod['url']]:
         if requests.head(url).ok:
             return url
     return None
