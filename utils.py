@@ -7,8 +7,13 @@ SLACK_WEBHOOK_URL = (
     'T0320DXKS/B7F8CG6KZ/y7EuYaFs6IM57ytEmujOh8AK'
 )
 
+SLACK_TEST_URL = (
+    'https://hooks.slack.com/services/'
+    'T0320DXKS/B079DG55K/RJsjlL2K4LVhXOs76QjXpjEx'
+)
 
-def send_to_slack(apod):
+
+def send_to_slack(apod, test=False):
     text = (
         '%(title)s\n\n'
         '%(image)s\n\n'
@@ -23,4 +28,6 @@ def send_to_slack(apod):
         })
     }
 
-    requests.post(SLACK_WEBHOOK_URL, data=data)
+    url = SLACK_TEST_URL if test else SLACK_WEBHOOK_URL
+
+    requests.post(url, data=data)
