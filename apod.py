@@ -1,16 +1,12 @@
 import requests
-import json
 
 from datetime import datetime
+
+from utils import send_to_slack
 
 
 API_KEY = 'DEMO_KEY'
 APOD_URL = 'https://api.nasa.gov/planetary/apod'
-
-SLACK_WEBHOOK_URL = (
-    'https://hooks.slack.com/services/'
-    'T0320DXKS/B7F8CG6KZ/y7EuYaFs6IM57ytEmujOh8AK'
-)
 
 
 def get_apod_for_today():
@@ -29,24 +25,6 @@ def get_available_image(apod):
         if requests.head(url).ok:
             return url
     return None
-
-
-def send_to_slack(apod):
-    text = (
-        '%(title)s\n\n'
-        '%(image)s\n\n'
-        '%(explanation)s'
-    ) % apod
-
-    data = {
-        'payload': json.dumps({
-            'text': text,
-            'username': 'apod',
-            'icon_emoji': ':sunny:'
-        })
-    }
-
-    requests.post(SLACK_WEBHOOK_URL, data=data)
 
 
 if __name__ == '__main__':
