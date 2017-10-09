@@ -15,8 +15,8 @@ SLACK_TEST_URL = (
 
 def send_to_slack(apod, test=False):
     text = (
-        '%(title)s\n\n'
         '%(image)s\n\n'
+        '%(title)s\n\n'
         '%(explanation)s'
     ) % apod
 
