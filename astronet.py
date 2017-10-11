@@ -32,14 +32,19 @@ def get_details_from_preview(preview):
 def parse_details(details):
     bs = BeautifulSoup(details)
 
-    full_text = bs.select('#content')[0].get_text()
-    start = full_text.index('Пояснение:') + len('Пояснение:')
+    title = bs.select('div font b')[0].get_text()
+    image = bs.select('div[align="center"] > a > img')[0].attrs['src']
+    content = bs.select('#content')[0]
 
-    text = re.sub('\s+', ' ', full_text[start:])
+    for tag in ['table', 'div', 'b', 'p']:
+        for node in content.select(tag):
+            node.extract()
+
+    text = re.sub('\s+', ' ', content.get_text())
 
     return {
-        'title': bs.select('div font b')[0].get_text(),
-        'image': bs.select('div[align="center"] > a > img')[0].attrs['src'],
+        'title': title,
+        'image': image,
         'explanation': text.strip(),
     }
 
