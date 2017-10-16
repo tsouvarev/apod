@@ -54,4 +54,4 @@ if __name__ == '__main__':
     preview = get_preview_for_date(date.today() - timedelta(2))
     details = get_details_from_preview(preview)
     data = parse_details(details)
-    send_to_slack(data, test=True)
+    send_to_slack(data)
