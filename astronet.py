@@ -21,7 +21,7 @@ def get_preview_for_date(dt):
 
 
 def get_details_from_preview(preview):
-    bs = BeautifulSoup(preview)
+    bs = BeautifulSoup(preview, "html.parser")
 
     link_to_details = bs.select('p.title a')[0].attrs['href']
     post_id = re.search('\d+$', link_to_details).group()
@@ -32,7 +32,7 @@ def get_details_from_preview(preview):
 
 
 def parse_details(details):
-    bs = BeautifulSoup(details)
+    bs = BeautifulSoup(details, "html.parser")
 
     title = bs.select('div font b')[0].get_text()
     images = bs.select('div[align="center"] > a > img')
