@@ -1,6 +1,7 @@
 import re
 import requests
 
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
@@ -9,6 +10,7 @@ from utils import send_to_slack
 
 ASTRONET_PREVIEW_URL = 'http://www.astronet.ru/db/apod.html'
 ASTRONET_PRINT_URL = 'http://www.astronet.ru/db/print/msg/%s/'
+YOUTUBE_VIDEO_URL = 'https://youtube.com/watch?v=%s'
 
 
 def get_preview_for_date(dt):
@@ -33,7 +35,17 @@ def parse_details(details):
     bs = BeautifulSoup(details)
 
     title = bs.select('div font b')[0].get_text()
-    image = bs.select('div[align="center"] > a > img')[0].attrs['src']
+    images = bs.select('div[align="center"] > a > img')
+    if images:
+        image = images[0].attrs['src']
+    else:
+        videos = bs.select('div[align="center"] > center > iframe')
+        video_url = videos[0].attrs['src']
+        parts = urlparse(video_url).path.split('/')
+        if 'embed' in parts:
+            video_id = parts[2]
+            image = YOUTUBE_VIDEO_URL % video_id
+
     content = bs.select('#content')[0]
 
     for tag in ['table', 'div', 'b', 'p']:
