@@ -28,7 +28,7 @@ def get_details_from_preview(preview):
 
     # I use print version because it's cleaner
     details_url = ASTRONET_PRINT_URL % post_id
-    return requests.get(details_url).content
+    return requests.get(details_url).content.decode('cp1251')
 
 
 def parse_details(details):
