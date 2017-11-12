@@ -1,4 +1,5 @@
 import json
+import random
 import requests
 
 
@@ -12,6 +13,17 @@ SLACK_TEST_URL = (
     'T0320DXKS/B079DG55K/RJsjlL2K4LVhXOs76QjXpjEx'
 )
 
+EMOJIS = [
+    ':sunny:',
+    ':alien:',
+    ':sun_with_face:',
+    ':full_moon_with_face:',
+    ':star:',
+    ':sparkles:',
+    ':boom:',
+    ':rocket:',
+]
+
 
 def send_to_slack(apod, test=False):
     text = (
@@ -24,7 +36,7 @@ def send_to_slack(apod, test=False):
         'payload': json.dumps({
             'text': text,
             'username': 'apod',
-            'icon_emoji': ':sunny:'
+            'icon_emoji': random.choice(EMOJIS),
         })
     }
 
