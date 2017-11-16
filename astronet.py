@@ -35,7 +35,7 @@ def parse_details(details):
     bs = BeautifulSoup(details, "html.parser")
 
     title = bs.select('div font b')[0].get_text()
-    images = bs.select('div[align="center"] > img')
+    images = bs.select('div[align="center"] img')
     if images:
         image = images[0].attrs['src']
     else:
