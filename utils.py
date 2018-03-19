@@ -26,20 +26,30 @@ EMOJIS = [
 
 
 def send_to_slack(apod, test=False):
+    emoji = get_emoji()
+    url = SLACK_TEST_URL if test else SLACK_WEBHOOK_URL
+    image = apod['image']
     text = (
-        '%(image)s\n\n'
         '%(title)s\n\n'
         '%(explanation)s'
     ) % apod
 
-    data = {
+    requests.post(url, data=get_post_data(image, emoji))
+    requests.post(url, data=get_post_data(text, emoji))
+
+
+def get_post_data(text, emoji=None, username='apod'):
+    if emoji is None:
+        emoji = get_emoji()
+
+    return {
         'payload': json.dumps({
             'text': text,
-            'username': 'apod',
-            'icon_emoji': random.choice(EMOJIS),
+            'username': username,
+            'icon_emoji': emoji,
         })
     }
 
-    url = SLACK_TEST_URL if test else SLACK_WEBHOOK_URL
 
-    requests.post(url, data=data)
+def get_emoji():
+    return random.choice(EMOJIS)
