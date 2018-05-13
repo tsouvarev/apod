@@ -4,56 +4,40 @@ import requests
 
 from pyshorteners import Shortener
 
-SLACK_WEBHOOK_URL = (
-    'https://hooks.slack.com/services/'
-    'T0320DXKS/B7F8CG6KZ/y7EuYaFs6IM57ytEmujOh8AK'
-)
-
 SLACK_TEST_URL = (
     'https://hooks.slack.com/services/'
     'T0320DXKS/B079DG55K/RJsjlL2K4LVhXOs76QjXpjEx'
 )
 
-EMOJIS = [
-    ':sunny:',
-    ':alien:',
-    ':sun_with_face:',
-    ':full_moon_with_face:',
-    ':star:',
-    ':sparkles:',
-    ':boom:',
-    ':rocket:',
-]
 
-
-def send_to_slack(apod, test=False):
-    emoji = get_emoji()
-    url = SLACK_TEST_URL if test else SLACK_WEBHOOK_URL
-    image = apod['image']
+def send_to_slack(webhook_url, data, emojis=None, test=False):
+    emoji = get_emoji(emojis)
+    url = SLACK_TEST_URL if test else webhook_url
+    image = data['image']
     text = (
         '%(title)s\n\n'
         '%(explanation)s'
-    ) % apod
+    ) % data
 
     requests.post(url, data=get_post_data(image, emoji))
     requests.post(url, data=get_post_data(text, emoji))
 
 
-def get_post_data(text, emoji=None, username='apod'):
-    if emoji is None:
-        emoji = get_emoji()
+def get_post_data(text, emoji=None):
+    post_data = {
+        'text': text,
+    }
+
+    if emoji is not None:
+        post_data.update(icon_emoji=emoji)
 
     return {
-        'payload': json.dumps({
-            'text': text,
-            'username': username,
-            'icon_emoji': emoji,
-        })
+        'payload': json.dumps(post_data),
     }
 
 
-def get_emoji():
-    return random.choice(EMOJIS)
+def get_emoji(emojis):
+    return random.choice(emojis)
 
 
 def get_short_url(long_url):

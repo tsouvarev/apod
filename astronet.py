@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
 from utils import send_to_slack
+from apod import EMOJIS, SLACK_WEBHOOK_URL
 
 
 ASTRONET_PREVIEW_URL = 'http://www.astronet.ru/db/apod.html'
@@ -78,4 +79,4 @@ if __name__ == '__main__':
     preview = get_preview_for_date(date.today() - timedelta(2))
     details = get_details_from_preview(preview)
     data = parse_details(details)
-    send_to_slack(data)
+    send_to_slack(SLACK_WEBHOOK_URL, data, emojis=EMOJIS)

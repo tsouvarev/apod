@@ -8,6 +8,22 @@ from utils import send_to_slack
 API_KEY = 'DEMO_KEY'
 APOD_URL = 'https://api.nasa.gov/planetary/apod'
 
+EMOJIS = [
+    ':sunny:',
+    ':alien:',
+    ':sun_with_face:',
+    ':full_moon_with_face:',
+    ':star:',
+    ':sparkles:',
+    ':boom:',
+    ':rocket:',
+]
+
+SLACK_WEBHOOK_URL = (
+    'https://hooks.slack.com/services/'
+    'T0320DXKS/B7F8CG6KZ/y7EuYaFs6IM57ytEmujOh8AK'
+)
+
 
 def get_apod_for_today():
     data = {
@@ -32,4 +48,4 @@ if __name__ == '__main__':
     available_image = get_available_image(apod)
     if available_image is not None:
         apod['image'] = available_image
-        send_to_slack(apod)
+        send_to_slack(SLACK_WEBHOOK_URL, apod, emojis=EMOJIS)
