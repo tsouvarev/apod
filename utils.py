@@ -2,6 +2,7 @@ import json
 import random
 import requests
 
+from pyshorteners import Shortener
 
 SLACK_WEBHOOK_URL = (
     'https://hooks.slack.com/services/'
@@ -53,3 +54,8 @@ def get_post_data(text, emoji=None, username='apod'):
 
 def get_emoji():
     return random.choice(EMOJIS)
+
+
+def get_short_url(long_url):
+    shortener = Shortener('Tinyurl')
+    return shortener.short(long_url)
