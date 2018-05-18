@@ -1,8 +1,10 @@
 import json
 import random
 import requests
+from funcy import retry
 
 from pyshorteners import Shortener
+from requests import RequestException
 
 SLACK_TEST_URL = (
     'https://hooks.slack.com/services/'
@@ -40,6 +42,7 @@ def get_emoji(emojis):
     return random.choice(emojis)
 
 
+@retry(5, errors=(RequestException, ), timeout=2)
 def get_short_url(long_url):
     shortener = Shortener('Tinyurl')
     return shortener.short(long_url)
