@@ -34,4 +34,4 @@ def get_data(latest_photos):
 if __name__ == '__main__':
     latest_photos = get_latest_photos()
     data = get_data(latest_photos)
-    send_to_slack(NAT_GEO_WEBHOOK_URL, data, emojis=EMOJIS, test=True)
+    send_to_slack(NAT_GEO_WEBHOOK_URL, data, emojis=EMOJIS)
