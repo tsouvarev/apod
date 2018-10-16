@@ -1,3 +1,4 @@
+import os
 import requests
 
 from datetime import datetime
@@ -18,11 +19,6 @@ EMOJIS = [
     ':boom:',
     ':rocket:',
 ]
-
-SLACK_WEBHOOK_URL = (
-    'https://hooks.slack.com/services/'
-    'T0320DXKS/B7F8CG6KZ/y7EuYaFs6IM57ytEmujOh8AK'
-)
 
 
 def get_apod_for_today():
@@ -48,4 +44,4 @@ if __name__ == '__main__':
     available_image = get_available_image(apod)
     if available_image is not None:
         apod['image'] = available_image
-        send_to_slack(SLACK_WEBHOOK_URL, apod, emojis=EMOJIS)
+        send_to_slack(os.environ['APOD_WEBHOOK_URL'], apod, emojis=EMOJIS)

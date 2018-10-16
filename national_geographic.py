@@ -1,14 +1,10 @@
+import os
 from datetime import date
 
 import requests
 from bs4 import BeautifulSoup
 
 from utils import send_to_slack, get_short_url
-
-NAT_GEO_WEBHOOK_URL = (
-    'https://hooks.slack.com/services/'
-    'T0320DXKS/BANV10RS9/dovyFIwnS3JBiRycr5Nru7PF'
-)
 
 PHOTO_OF_THE_DAY_URL = (
     'https://www.nationalgeographic.com/'
@@ -51,4 +47,4 @@ def get_data_for_today(month_data):
 if __name__ == '__main__':
     month_data = get_data_for_month()
     data = get_data_for_today(month_data)
-    send_to_slack(NAT_GEO_WEBHOOK_URL, data, emojis=EMOJIS)
+    send_to_slack(os.environ['NAT_GEO_WEBHOOK_URL'], data, emojis=EMOJIS)

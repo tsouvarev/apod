@@ -1,6 +1,7 @@
+import os
 import requests
 
-from national_geographic import NAT_GEO_WEBHOOK_URL, EMOJIS
+from national_geographic import EMOJIS
 from utils import send_to_slack, get_short_url
 
 HASH_TAG = 'mountains'
@@ -34,4 +35,4 @@ def get_data(latest_photos):
 if __name__ == '__main__':
     latest_photos = get_latest_photos()
     data = get_data(latest_photos)
-    send_to_slack(NAT_GEO_WEBHOOK_URL, data, emojis=EMOJIS)
+    send_to_slack(os.environ['NAT_GEO_WEBHOOK_URL'], data, emojis=EMOJIS)
