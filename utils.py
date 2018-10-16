@@ -1,20 +1,16 @@
 import json
 import random
+import os
 import requests
 from funcy import retry
 
 from pyshorteners import Shortener
 from requests import RequestException
 
-SLACK_TEST_URL = (
-    'https://hooks.slack.com/services/'
-    'T0320DXKS/B079DG55K/RJsjlL2K4LVhXOs76QjXpjEx'
-)
-
 
 def send_to_slack(webhook_url, data, emojis=None, test=False):
     emoji = get_emoji(emojis)
-    url = SLACK_TEST_URL if test else webhook_url
+    url = os.environ['SLACK_TEST_URL'] if test else webhook_url
     image = data['image']
     text = (
         '%(title)s\n\n'
