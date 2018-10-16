@@ -39,7 +39,7 @@ def get_data_for_today(month_data):
     ).get_text().strip()
 
     # this URL gets REALLY huge
-    image_url = today_json['url'] + today_json['sizes']['1600']
+    image_url = today_json['url']
 
     return {
         'image': get_short_url(image_url),
