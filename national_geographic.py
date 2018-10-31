@@ -35,7 +35,10 @@ def get_data_for_today(month_data):
     ).get_text().strip()
 
     # this URL gets REALLY huge
-    image_url = today_json['url']
+    if 'sizes' in today_json:
+        image_url = today_json['sizes']['1600']
+    else:
+        image_url = today_json['url']
 
     return {
         'image': get_short_url(image_url),
