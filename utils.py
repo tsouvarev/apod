@@ -2,10 +2,17 @@ import json
 import random
 import os
 import requests
-from funcy import retry
+from funcy import retry, silent
 
-from pyshorteners import Shortener
+from pyshorteners import Shortener, Shorteners
 from requests import RequestException
+
+
+DEFAULT_LIST_OF_SHORTENERS = [
+    Shorteners.TINYURL,
+    Shorteners.ISGD,
+    Shorteners.DAGD,
+]
 
 
 def send_to_slack(webhook_url, data, emojis=None, test=False):
@@ -38,7 +45,15 @@ def get_emoji(emojis):
     return random.choice(emojis)
 
 
-@retry(5, errors=(RequestException, ), timeout=2)
-def get_short_url(long_url):
-    shortener = Shortener('Tinyurl')
-    return shortener.short(long_url)
+def get_short_url(long_url, shorteners=DEFAULT_LIST_OF_SHORTENERS):
+    retryer = retry(5, errors=(RequestException, ), timeout=2)
+
+    for shortener in shorteners:
+        shortener = Shortener(shortener)
+
+        short_url = silent(retryer(shortener.short))(long_url)
+
+        if short_url:
+            return short_url
+
+    return long_url
